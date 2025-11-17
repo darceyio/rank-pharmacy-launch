@@ -68,7 +68,7 @@ export default function PatientForm({
       return;
     }
 
-    const { error } = await supabase.from('bookings').insert({
+    const { data: booking, error } = await supabase.from('bookings').insert({
       pharmacy_id: service.pharmacy_id,
       pharmacy_service_id: serviceId,
       booking_start: bookingStart.toISOString(),
@@ -80,11 +80,11 @@ export default function PatientForm({
       notes: values.notes || null,
       status: 'pending',
       source: 'web',
-    });
+    }).select().single();
 
     setSubmitting(false);
 
-    if (error) {
+    if (error || !booking) {
       toast({
         title: 'Booking Failed',
         description: 'This time slot may no longer be available. Please try another time.',
@@ -92,6 +92,13 @@ export default function PatientForm({
       });
       return;
     }
+
+    // Send confirmation emails via edge function
+    supabase.functions.invoke('send-booking-confirmation', {
+      body: { bookingId: booking.id }
+    }).catch(err => {
+      console.error('Error sending confirmation emails:', err);
+    });
 
     toast({
       title: 'Booking Confirmed!',
