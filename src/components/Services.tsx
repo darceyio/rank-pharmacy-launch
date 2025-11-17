@@ -125,12 +125,24 @@ const Services = () => {
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="aspect-video overflow-hidden">
-                  <img
-                    src={image}
-                    alt={title}
-                    className="w-full h-full object-cover hover-scale"
-                    loading="lazy"
-                  />
+                  {image.includes('.mp4') || image.includes('.webm') ? (
+                    <video
+                      src={image}
+                      className="w-full h-full object-cover hover-scale"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                    />
+                  ) : (
+                    <img
+                      src={image}
+                      alt={title}
+                      className="w-full h-full object-cover hover-scale"
+                      loading="lazy"
+                    />
+                  )}
                 </div>
                 <div className="p-6 space-y-4">
                   <h3 className="text-2xl font-bold">{title}</h3>
