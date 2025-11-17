@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { usePharmacist } from '@/hooks/usePharmacist';
-import PortalLayout from '@/components/portal/PortalLayout';
+import PortalLayoutNew from '@/components/portal/PortalLayoutNew';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -82,18 +82,18 @@ export default function Services() {
 
   if (loading) {
     return (
-      <PortalLayout>
+      <PortalLayoutNew>
         <div className="animate-pulse space-y-4">
           {[1, 2, 3].map((i) => (
             <div key={i} className="h-48 bg-muted rounded"></div>
           ))}
         </div>
-      </PortalLayout>
+      </PortalLayoutNew>
     );
   }
 
   return (
-    <PortalLayout>
+    <PortalLayoutNew>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
@@ -212,6 +212,6 @@ export default function Services() {
           </div>
         )}
       </div>
-    </PortalLayout>
+    </PortalLayoutNew>
   );
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { usePharmacist } from '@/hooks/usePharmacist';
-import PortalLayout from '@/components/portal/PortalLayout';
+import PortalLayoutNew from '@/components/portal/PortalLayoutNew';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -72,18 +72,18 @@ export default function PharmacySettings() {
 
   if (loading) {
     return (
-      <PortalLayout>
+      <PortalLayoutNew>
         <div className="animate-pulse space-y-4">
           <div className="h-32 bg-muted rounded"></div>
         </div>
-      </PortalLayout>
+      </PortalLayoutNew>
     );
   }
 
   const isOwner = pharmacist?.role === 'pharmacy_owner' || pharmacist?.role === 'super_admin';
 
   return (
-    <PortalLayout>
+    <PortalLayoutNew>
       <div className="space-y-6 max-w-2xl">
         <div>
           <h1 className="text-3xl font-bold">Pharmacy Settings</h1>
@@ -190,6 +190,6 @@ export default function PharmacySettings() {
           </CardContent>
         </Card>
       </div>
-    </PortalLayout>
+    </PortalLayoutNew>
   );
 }
