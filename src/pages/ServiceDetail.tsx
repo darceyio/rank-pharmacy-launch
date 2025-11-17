@@ -181,38 +181,9 @@ export default function ServiceDetail() {
           
           {/* Hero Content */}
           <div className="absolute bottom-0 left-0 right-0 container-padding mx-auto max-w-4xl pb-12">
-            <div className="flex items-end justify-between gap-4">
-              <div className="text-white">
-                <h1 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">
-                  {service.custom_title || service.service_catalogue?.name}
-                </h1>
-                {service.short_summary && (
-                  <p className="text-xl md:text-2xl text-white/90 mb-4 drop-shadow-md max-w-3xl">
-                    {service.short_summary}
-                  </p>
-                )}
-                <div className="flex flex-wrap gap-4">
-                  {service.duration_minutes && (
-                    <Badge variant="secondary" className="text-base px-4 py-2">
-                      <Clock className="h-4 w-4 mr-2" />
-                      {service.duration_minutes} mins
-                    </Badge>
-                  )}
-                  {service.price_from && (
-                    <Badge variant="secondary" className="text-base px-4 py-2">
-                      <Coins className="h-4 w-4 mr-2" />
-                      From £{service.price_from}
-                    </Badge>
-                  )}
-                  {service.booking_enabled && (
-                    <Badge className="text-base px-4 py-2">
-                      <Calendar className="h-4 w-4 mr-2" />
-                      Book Online
-                    </Badge>
-                  )}
-                </div>
-              </div>
-            </div>
+            <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-lg">
+              {service.custom_title || service.service_catalogue?.name}
+            </h1>
           </div>
         </div>
       )}
@@ -277,6 +248,36 @@ export default function ServiceDetail() {
             Back to Services
           </Button>
         )}
+
+        {/* Service Details */}
+        <div className="mb-8">
+          {service.short_summary && (
+            <p className="text-xl text-muted-foreground mb-6">
+              {service.short_summary}
+            </p>
+          )}
+          
+          <div className="flex flex-wrap gap-4 mb-6">
+            {service.duration_minutes && (
+              <Badge variant="secondary" className="text-base px-4 py-2">
+                <Clock className="h-4 w-4 mr-2" />
+                {service.duration_minutes} mins
+              </Badge>
+            )}
+            {service.price_from && (
+              <Badge variant="secondary" className="text-base px-4 py-2">
+                <Coins className="h-4 w-4 mr-2" />
+                From £{service.price_from}
+              </Badge>
+            )}
+            {service.booking_enabled && (
+              <Badge className="text-base px-4 py-2">
+                <Calendar className="h-4 w-4 mr-2" />
+                Book Online
+              </Badge>
+            )}
+          </div>
+        </div>
 
         <div className="prose prose-slate max-w-none mb-8">
           <h2 className="text-2xl font-bold mb-4">About This Service</h2>
