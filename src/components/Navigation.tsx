@@ -16,10 +16,10 @@ const Navigation = () => {
   }, []);
 
   const navLinks = [
-    { label: "Home", href: "#home" },
-    { label: "Prescriptions", href: "#prescriptions" },
-    { label: "Services", href: "#services" },
-    { label: "About", href: "#about" },
+    { label: "Home", href: "/" },
+    { label: "Prescriptions", href: "/#prescriptions" },
+    { label: "Services", href: "/#services" },
+    { label: "About", href: "/#about" },
   ];
 
   return (
@@ -32,7 +32,7 @@ const Navigation = () => {
     >
       <div className="container-padding mx-auto max-w-7xl">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <a href="#home" className="flex items-center">
+          <a href="/" className="flex items-center">
             <img src={logo} alt="Rank Pharmacy" className="h-8 md:h-10" />
           </a>
 
@@ -51,7 +51,7 @@ const Navigation = () => {
               asChild
               className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground"
             >
-              <a href="#account">My account</a>
+              <a href="/#account">My account</a>
             </Button>
           </div>
 
@@ -83,7 +83,7 @@ const Navigation = () => {
                 asChild
                 className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground w-full"
               >
-                <a href="#account" onClick={() => setIsMobileMenuOpen(false)}>
+                <a href="/#account" onClick={() => setIsMobileMenuOpen(false)}>
                   My account
                 </a>
               </Button>

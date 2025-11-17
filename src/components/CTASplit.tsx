@@ -37,7 +37,7 @@ const CTASplit = () => {
               size="lg"
               className="rounded-full bg-card text-card-foreground hover:bg-card/90 px-8"
             >
-              <a href="#signup">Get Started</a>
+              <a href="/#signup">Get Started</a>
             </Button>
           </div>
 

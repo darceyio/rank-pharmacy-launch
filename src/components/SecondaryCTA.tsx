@@ -30,7 +30,7 @@ const SecondaryCTA = () => {
             size="lg"
             className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-8"
           >
-            <a href="#signup">Register now</a>
+            <a href="/#signup">Register now</a>
           </Button>
         </div>
       </div>

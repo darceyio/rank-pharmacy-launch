@@ -29,7 +29,7 @@ const Hero = () => {
                 size="lg"
                 className="rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-8"
               >
-                <a href="#services">View Services</a>
+                <a href="/#services">View Services</a>
               </Button>
               <Button
                 asChild
@@ -37,7 +37,7 @@ const Hero = () => {
                 size="lg"
                 className="rounded-full border-2 hover:bg-muted"
               >
-                <a href="#about">Learn More</a>
+                <a href="/#about">Learn More</a>
               </Button>
             </div>
           </div>
