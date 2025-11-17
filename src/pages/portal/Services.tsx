@@ -10,17 +10,17 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Edit, Calendar, Eye, Plus, Search, Briefcase } from 'lucide-react';
 import { toast } from 'sonner';
+import AddServiceDialog from '@/components/portal/AddServiceDialog';
 
 export default function Services() {
   const { pharmacist } = usePharmacist();
   const [services, setServices] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showAddDialog, setShowAddDialog] = useState(false);
 
-  useEffect(() => {
+  const fetchServices = async () => {
     if (!pharmacist?.pharmacy_id) return;
-
-    const fetchServices = async () => {
       const { data, error } = await supabase
         .from('pharmacy_services')
         .select(`
@@ -30,15 +30,16 @@ export default function Services() {
         .eq('pharmacy_id', pharmacist.pharmacy_id)
         .order('created_at', { ascending: false });
 
-      if (error) {
-        console.error('Error fetching services:', error);
-        toast.error('Failed to load services');
-      } else {
-        setServices(data || []);
-      }
-      setLoading(false);
-    };
+    if (error) {
+      console.error('Error fetching services:', error);
+      toast.error('Failed to load services');
+    } else {
+      setServices(data || []);
+    }
+    setLoading(false);
+  };
 
+  useEffect(() => {
     fetchServices();
   }, [pharmacist?.pharmacy_id]);
 
@@ -102,7 +103,7 @@ export default function Services() {
               Manage your pharmacy's service offerings
             </p>
           </div>
-          <Button className="gap-2">
+          <Button onClick={() => setShowAddDialog(true)} className="gap-2">
             <Plus className="h-4 w-4" />
             Add Service
           </Button>
@@ -212,6 +213,12 @@ export default function Services() {
           </div>
         )}
       </div>
+
+      <AddServiceDialog
+        open={showAddDialog}
+        onOpenChange={setShowAddDialog}
+        onServiceAdded={fetchServices}
+      />
     </PortalLayoutNew>
   );
 }
