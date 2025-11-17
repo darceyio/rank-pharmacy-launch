@@ -180,7 +180,16 @@ export default function ServiceDetail() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-background" />
           
           {/* Hero Content */}
-          <div className="absolute bottom-0 left-0 right-0 container-padding mx-auto max-w-4xl pb-12">
+          <div className="absolute inset-0 container-padding mx-auto max-w-4xl flex flex-col justify-between pt-32 pb-12">
+            <Button
+              onClick={() => navigate('/services')}
+              variant="ghost"
+              className="self-start backdrop-blur-md bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-all"
+            >
+              <ChevronLeft className="mr-2 h-4 w-4" />
+              Back to Services
+            </Button>
+            
             <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-lg">
               {service.custom_title || service.service_catalogue?.name}
             </h1>
@@ -194,7 +203,7 @@ export default function ServiceDetail() {
             <Button
               onClick={() => navigate('/services')}
               variant="ghost"
-              className="mb-6"
+              className="mb-6 backdrop-blur-md bg-background/80 border border-border/20 hover:bg-background/90 transition-all"
             >
               <ChevronLeft className="mr-2 h-4 w-4" />
               Back to Services
@@ -238,16 +247,6 @@ export default function ServiceDetail() {
           </>
         )}
 
-        {service.hero_image_url && (
-          <Button
-            onClick={() => navigate('/services')}
-            variant="ghost"
-            className="mb-8"
-          >
-            <ChevronLeft className="mr-2 h-4 w-4" />
-            Back to Services
-          </Button>
-        )}
 
         {/* Service Details */}
         <div className="mb-8">
