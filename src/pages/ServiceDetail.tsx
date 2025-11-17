@@ -180,7 +180,7 @@ export default function ServiceDetail() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-background" />
           
           {/* Hero Content */}
-          <div className="absolute bottom-0 left-0 right-0 container-padding mx-auto max-w-4xl pb-12">
+          <div className="absolute bottom-0 left-0 right-0 container-padding mx-auto max-w-4xl pb-12 relative z-10">
             <Button
               onClick={() => navigate('/services')}
               variant="ghost"
@@ -196,13 +196,13 @@ export default function ServiceDetail() {
             
             <div className="flex flex-wrap gap-4">
               {service.price_from && (
-                <Badge variant="secondary" className="text-base px-4 py-2 backdrop-blur-md bg-white/20 border border-white/30 text-white">
+                <Badge variant="secondary" className="text-base px-4 py-2">
                   <Coins className="h-4 w-4 mr-2" />
                   From £{service.price_from}
                 </Badge>
               )}
               {service.booking_enabled && (
-                <Badge className="text-base px-4 py-2 backdrop-blur-md bg-primary/80 border border-white/30">
+                <Badge className="text-base px-4 py-2">
                   <Calendar className="h-4 w-4 mr-2" />
                   Book Online
                 </Badge>
