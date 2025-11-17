@@ -180,11 +180,11 @@ export default function ServiceDetail() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-background" />
           
           {/* Hero Content */}
-          <div className="absolute inset-0 container-padding mx-auto max-w-4xl flex flex-col justify-between pt-32 pb-12">
+          <div className="absolute bottom-0 left-0 right-0 container-padding mx-auto max-w-4xl pb-12">
             <Button
               onClick={() => navigate('/services')}
               variant="ghost"
-              className="self-start backdrop-blur-md bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-all"
+              className="mb-4 backdrop-blur-md bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-all"
             >
               <ChevronLeft className="mr-2 h-4 w-4" />
               Back to Services
