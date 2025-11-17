@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -9,7 +9,8 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { Plus } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Plus, AlertTriangle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -45,9 +46,21 @@ interface AddAvailabilityDialogProps {
   onSuccess: () => void;
 }
 
+interface Conflict {
+  day: number;
+  dayLabel: string;
+  existingRule: {
+    start_time: string;
+    end_time: string;
+    pharmacist_name?: string;
+  };
+}
+
 export default function AddAvailabilityDialog({ serviceId, pharmacists, onSuccess }: AddAvailabilityDialogProps) {
   const [open, setOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [conflicts, setConflicts] = useState<Conflict[]>([]);
+  const [checking, setChecking] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -61,7 +74,87 @@ export default function AddAvailabilityDialog({ serviceId, pharmacists, onSucces
     },
   });
 
+  // Check for overlapping availability rules
+  useEffect(() => {
+    const checkOverlaps = async () => {
+      const days = form.watch('days');
+      const startTime = form.watch('start_time');
+      const endTime = form.watch('end_time');
+      const pharmacistId = form.watch('pharmacist_id');
+
+      if (!days.length || !startTime || !endTime || !open) {
+        setConflicts([]);
+        return;
+      }
+
+      setChecking(true);
+      try {
+        // Fetch existing rules for the selected days and service
+        let query = supabase
+          .from('service_availability')
+          .select('*, pharmacists(first_name, last_name)')
+          .eq('pharmacy_service_id', serviceId)
+          .in('day_of_week', days)
+          .eq('is_active', true);
+
+        // If a specific pharmacist is selected, only check their rules
+        if (pharmacistId) {
+          query = query.eq('pharmacist_id', pharmacistId);
+        }
+
+        const { data: existingRules } = await query;
+
+        if (!existingRules || existingRules.length === 0) {
+          setConflicts([]);
+          return;
+        }
+
+        // Check for time overlaps
+        const newConflicts: Conflict[] = [];
+        
+        existingRules.forEach((rule) => {
+          // Two time ranges overlap if: start1 < end2 AND start2 < end1
+          if (startTime < rule.end_time && endTime > rule.start_time) {
+            const dayLabel = DAYS.find(d => d.value === rule.day_of_week)?.label || 'Unknown';
+            newConflicts.push({
+              day: rule.day_of_week,
+              dayLabel,
+              existingRule: {
+                start_time: rule.start_time,
+                end_time: rule.end_time,
+                pharmacist_name: rule.pharmacists 
+                  ? `${rule.pharmacists.first_name} ${rule.pharmacists.last_name}`
+                  : undefined,
+              },
+            });
+          }
+        });
+
+        setConflicts(newConflicts);
+      } catch (error) {
+        console.error('Error checking overlaps:', error);
+      } finally {
+        setChecking(false);
+      }
+    };
+
+    checkOverlaps();
+  }, [
+    form.watch('days'), 
+    form.watch('start_time'), 
+    form.watch('end_time'), 
+    form.watch('pharmacist_id'),
+    serviceId,
+    open
+  ]);
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    // Prevent submission if there are conflicts
+    if (conflicts.length > 0) {
+      toast.error('Please resolve scheduling conflicts before creating availability rules');
+      return;
+    }
+
     setSubmitting(true);
     try {
       // Create availability rules for each selected day
@@ -85,6 +178,7 @@ export default function AddAvailabilityDialog({ serviceId, pharmacists, onSucces
       toast.success(`${rules.length} availability rule${rules.length > 1 ? 's' : ''} created`);
       setOpen(false);
       form.reset();
+      setConflicts([]);
       onSuccess();
     } catch (error) {
       console.error('Error creating availability:', error);
@@ -112,6 +206,35 @@ export default function AddAvailabilityDialog({ serviceId, pharmacists, onSucces
         
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            {/* Conflict Warning */}
+            {conflicts.length > 0 && (
+              <Alert variant="destructive">
+                <AlertTriangle className="h-4 w-4" />
+                <AlertDescription>
+                  <div className="font-semibold mb-2">Scheduling Conflicts Detected</div>
+                  <ul className="space-y-1 text-sm">
+                    {conflicts.map((conflict, idx) => (
+                      <li key={idx}>
+                        <strong>{conflict.dayLabel}:</strong> Overlaps with existing rule{' '}
+                        {conflict.existingRule.start_time} - {conflict.existingRule.end_time}
+                        {conflict.existingRule.pharmacist_name && (
+                          <> ({conflict.existingRule.pharmacist_name})</>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-2 text-sm">
+                    Please adjust your times or deselect conflicting days to continue.
+                  </p>
+                </AlertDescription>
+              </Alert>
+            )}
+            
+            {checking && (
+              <div className="text-sm text-muted-foreground">
+                Checking for conflicts...
+              </div>
+            )}
             <FormField
               control={form.control}
               name="days"
@@ -255,7 +378,10 @@ export default function AddAvailabilityDialog({ serviceId, pharmacists, onSucces
               <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={submitting}>
                 Cancel
               </Button>
-              <Button type="submit" disabled={submitting}>
+              <Button 
+                type="submit" 
+                disabled={submitting || conflicts.length > 0 || checking}
+              >
                 {submitting ? 'Creating...' : 'Create Availability'}
               </Button>
             </DialogFooter>
