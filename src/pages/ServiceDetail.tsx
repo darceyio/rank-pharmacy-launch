@@ -190,9 +190,24 @@ export default function ServiceDetail() {
               Back to Services
             </Button>
             
-            <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-lg">
+            <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-lg mb-4">
               {service.custom_title || service.service_catalogue?.name}
             </h1>
+            
+            <div className="flex flex-wrap gap-4">
+              {service.price_from && (
+                <Badge variant="secondary" className="text-base px-4 py-2 backdrop-blur-md bg-white/20 border border-white/30 text-white">
+                  <Coins className="h-4 w-4 mr-2" />
+                  From £{service.price_from}
+                </Badge>
+              )}
+              {service.booking_enabled && (
+                <Badge className="text-base px-4 py-2 backdrop-blur-md bg-primary/80 border border-white/30">
+                  <Calendar className="h-4 w-4 mr-2" />
+                  Book Online
+                </Badge>
+              )}
+            </div>
           </div>
         </div>
       )}
@@ -256,26 +271,12 @@ export default function ServiceDetail() {
             </p>
           )}
           
-          <div className="flex flex-wrap gap-4 mb-6">
-            {service.duration_minutes && (
-              <Badge variant="secondary" className="text-base px-4 py-2">
-                <Clock className="h-4 w-4 mr-2" />
-                {service.duration_minutes} mins
-              </Badge>
-            )}
-            {service.price_from && (
-              <Badge variant="secondary" className="text-base px-4 py-2">
-                <Coins className="h-4 w-4 mr-2" />
-                From £{service.price_from}
-              </Badge>
-            )}
-            {service.booking_enabled && (
-              <Badge className="text-base px-4 py-2">
-                <Calendar className="h-4 w-4 mr-2" />
-                Book Online
-              </Badge>
-            )}
-          </div>
+          {service.duration_minutes && (
+            <Badge variant="secondary" className="text-base px-4 py-2">
+              <Clock className="h-4 w-4 mr-2" />
+              {service.duration_minutes} mins
+            </Badge>
+          )}
         </div>
 
         <div className="prose prose-slate max-w-none mb-8">
