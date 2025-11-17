@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import MediaUpload from '@/components/portal/MediaUpload';
 import { toast } from 'sonner';
 import { ArrowLeft, Save, Eye } from 'lucide-react';
 
@@ -26,6 +27,7 @@ export default function ServiceContent() {
     meta_title: '',
     meta_description: '',
     slug: '',
+    hero_image_url: '',
   });
 
   useEffect(() => {
@@ -56,6 +58,7 @@ export default function ServiceContent() {
           meta_title: data.meta_title || '',
           meta_description: data.meta_description || '',
           slug: data.slug || '',
+          hero_image_url: data.hero_image_url || '',
         });
       }
       setLoading(false);
@@ -74,6 +77,7 @@ export default function ServiceContent() {
       description: service.description,
       meta_title: service.meta_title,
       meta_description: service.meta_description,
+      hero_image_url: service.hero_image_url,
     };
 
     if (service.price_from) {
@@ -128,6 +132,22 @@ export default function ServiceContent() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic Information */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Hero Media</CardTitle>
+              <CardDescription>
+                Cover photo or video displayed at the top of the service page
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <MediaUpload
+                serviceId={id!}
+                currentMediaUrl={service.hero_image_url}
+                onUploadSuccess={(url) => setService({ ...service, hero_image_url: url })}
+              />
+            </CardContent>
+          </Card>
+
           <Card>
             <CardHeader>
               <CardTitle>Basic Information</CardTitle>

@@ -155,61 +155,126 @@ export default function ServiceDetail() {
     <div className="min-h-screen">
       <Navigation />
       
-      <main className="container-padding mx-auto max-w-4xl pt-32 pb-16">
-        <Button
-          onClick={() => navigate('/services')}
-          variant="ghost"
-          className="mb-6"
-        >
-          <ChevronLeft className="mr-2 h-4 w-4" />
-          Back to Services
-        </Button>
-
-        {service.hero_image_url && (
-          <div className="aspect-video w-full overflow-hidden rounded-lg mb-8">
+      {/* Hero Media - Full Width */}
+      {service.hero_image_url && (
+        <div className="relative w-full h-[60vh] min-h-[400px] max-h-[600px] overflow-hidden">
+          {service.hero_image_url.includes('.mp4') || service.hero_image_url.includes('.webm') ? (
+            <video
+              src={service.hero_image_url}
+              className="absolute inset-0 w-full h-full object-cover"
+              autoPlay
+              muted
+              loop
+              playsInline
+            />
+          ) : (
             <img
               src={service.hero_image_url}
               alt={service.custom_title || service.service_catalogue?.name || ''}
-              className="w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-cover"
             />
-          </div>
-        )}
-
-        <div className="mb-8">
-          <div className="flex items-start justify-between gap-4 mb-4">
-            <h1 className="text-4xl md:text-5xl font-bold">
-              {service.custom_title || service.service_catalogue?.name}
-            </h1>
-            {service.booking_enabled && (
-              <Badge variant="secondary" className="shrink-0">
-                Book Online
-              </Badge>
-            )}
-          </div>
-
-          {service.short_summary && (
-            <p className="text-xl text-muted-foreground mb-6">
-              {service.short_summary}
-            </p>
           )}
-
-          <div className="flex flex-wrap gap-6 text-muted-foreground">
-            {service.duration_minutes && (
-              <div className="flex items-center gap-2">
-                <Clock className="h-5 w-5" />
-                <span>{service.duration_minutes} minutes</span>
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-background" />
+          
+          {/* Hero Content */}
+          <div className="absolute bottom-0 left-0 right-0 container-padding mx-auto max-w-4xl pb-12">
+            <div className="flex items-end justify-between gap-4">
+              <div className="text-white">
+                <h1 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">
+                  {service.custom_title || service.service_catalogue?.name}
+                </h1>
+                {service.short_summary && (
+                  <p className="text-xl md:text-2xl text-white/90 mb-4 drop-shadow-md max-w-3xl">
+                    {service.short_summary}
+                  </p>
+                )}
+                <div className="flex flex-wrap gap-4">
+                  {service.duration_minutes && (
+                    <Badge variant="secondary" className="text-base px-4 py-2">
+                      <Clock className="h-4 w-4 mr-2" />
+                      {service.duration_minutes} mins
+                    </Badge>
+                  )}
+                  {service.price_from && (
+                    <Badge variant="secondary" className="text-base px-4 py-2">
+                      <Coins className="h-4 w-4 mr-2" />
+                      From £{service.price_from}
+                    </Badge>
+                  )}
+                  {service.booking_enabled && (
+                    <Badge className="text-base px-4 py-2">
+                      <Calendar className="h-4 w-4 mr-2" />
+                      Book Online
+                    </Badge>
+                  )}
+                </div>
               </div>
-            )}
-            {service.price_from && (
-              <div className="flex items-center gap-2">
-                <Coins className="h-5 w-5" />
-                <span>From £{service.price_from}</span>
-              </div>
-            )}
+            </div>
           </div>
         </div>
+      )}
+      
+      <main className={`container-padding mx-auto max-w-4xl pb-16 ${service.hero_image_url ? 'pt-12' : 'pt-32'}`}>
+        {!service.hero_image_url && (
+          <>
+            <Button
+              onClick={() => navigate('/services')}
+              variant="ghost"
+              className="mb-6"
+            >
+              <ChevronLeft className="mr-2 h-4 w-4" />
+              Back to Services
+            </Button>
 
-        <Separator className="my-8" />
+            <div className="mb-8">
+              <div className="flex items-start justify-between gap-4 mb-4">
+                <h1 className="text-4xl md:text-5xl font-bold">
+                  {service.custom_title || service.service_catalogue?.name}
+                </h1>
+                {service.booking_enabled && (
+                  <Badge variant="secondary" className="shrink-0">
+                    Book Online
+                  </Badge>
+                )}
+              </div>
+
+              {service.short_summary && (
+                <p className="text-xl text-muted-foreground mb-6">
+                  {service.short_summary}
+                </p>
+              )}
+
+              <div className="flex flex-wrap gap-6 text-muted-foreground">
+                {service.duration_minutes && (
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-5 w-5" />
+                    <span>{service.duration_minutes} minutes</span>
+                  </div>
+                )}
+                {service.price_from && (
+                  <div className="flex items-center gap-2">
+                    <Coins className="h-5 w-5" />
+                    <span>From £{service.price_from}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <Separator className="my-8" />
+          </>
+        )}
+
+        {service.hero_image_url && (
+          <Button
+            onClick={() => navigate('/services')}
+            variant="ghost"
+            className="mb-8"
+          >
+            <ChevronLeft className="mr-2 h-4 w-4" />
+            Back to Services
+          </Button>
+        )}
 
         <div className="prose prose-slate max-w-none mb-8">
           <h2 className="text-2xl font-bold mb-4">About This Service</h2>
