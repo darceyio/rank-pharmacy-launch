@@ -166,12 +166,14 @@ export default function ServiceDetail() {
               muted
               loop
               playsInline
+              preload="metadata"
             />
           ) : (
             <img
               src={service.hero_image_url}
               alt={service.custom_title || service.service_catalogue?.name || ''}
               className="absolute inset-0 w-full h-full object-cover"
+              loading="lazy"
             />
           )}
           {/* Gradient Overlay */}

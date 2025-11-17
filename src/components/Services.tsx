@@ -129,11 +129,12 @@ const Services = () => {
                     src={image}
                     alt={title}
                     className="w-full h-full object-cover hover-scale"
+                    loading="lazy"
                   />
                 </div>
                 <div className="p-6 space-y-4">
                   <h3 className="text-2xl font-bold">{title}</h3>
-                  <p className="text-secondary">{description}</p>
+                  <p className="text-secondary line-clamp-5">{description}</p>
                   <Button
                     asChild
                     variant="outline"
