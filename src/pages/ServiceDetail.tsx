@@ -155,7 +155,7 @@ export default function ServiceDetail() {
     <div className="min-h-screen">
       <Navigation />
       
-      {/* Hero Media - Full Width, Visual Only */}
+      {/* Hero Media - Full Width with Title Overlay */}
       {service.hero_image_url && (
         <div className="relative w-full h-[50vh] md:h-[60vh] min-h-[300px] md:min-h-[400px] max-h-[500px] md:max-h-[600px] overflow-hidden">
           {service.hero_image_url.includes('.mp4') || service.hero_image_url.includes('.webm') ? (
@@ -176,8 +176,15 @@ export default function ServiceDetail() {
               loading="lazy"
             />
           )}
-          {/* Subtle gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/30" />
+          {/* Gradient overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-background/60" />
+          
+          {/* H1 Title Overlay */}
+          <div className="absolute inset-0 flex items-center justify-center container-padding mx-auto max-w-4xl">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white text-center drop-shadow-lg">
+              {service.custom_title || service.service_catalogue?.name}
+            </h1>
+          </div>
         </div>
       )}
       
@@ -190,20 +197,15 @@ export default function ServiceDetail() {
               onClick={() => navigate('/services')}
               variant="ghost"
               size="sm"
-              className="mb-2"
+              className="mb-4"
             >
               <ChevronLeft className="mr-2 h-4 w-4" />
               Back to Services
             </Button>
 
-            {/* Service Title */}
+            {/* Badges Row */}
             <div>
-              <h1 className="text-3xl md:text-5xl font-bold mb-4">
-                {service.custom_title || service.service_catalogue?.name}
-              </h1>
-              
-              {/* Badges Row */}
-              <div className="flex flex-wrap gap-3 mb-4">
+              <div className="flex flex-wrap gap-3 mb-6">
                 {service.duration_minutes && (
                   <Badge variant="secondary" className="text-sm px-3 py-1.5">
                     <Clock className="h-4 w-4 mr-1.5" />
