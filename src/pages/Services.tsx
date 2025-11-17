@@ -103,11 +103,22 @@ export default function Services() {
               <Card key={service.id} className="flex flex-col hover-scale">
                 {service.hero_image_url && (
                   <div className="aspect-video w-full overflow-hidden rounded-t-lg">
-                    <img
-                      src={service.hero_image_url}
-                      alt={service.custom_title || service.service_catalogue?.name || ''}
-                      className="w-full h-full object-cover"
-                    />
+                    {service.hero_image_url.includes('.mp4') || service.hero_image_url.includes('.webm') ? (
+                      <video
+                        src={service.hero_image_url}
+                        className="w-full h-full object-cover"
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                      />
+                    ) : (
+                      <img
+                        src={service.hero_image_url}
+                        alt={service.custom_title || service.service_catalogue?.name || ''}
+                        className="w-full h-full object-cover"
+                      />
+                    )}
                   </div>
                 )}
                 
