@@ -180,7 +180,7 @@ export default function ServiceDetail() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-background" />
           
           {/* Hero Content */}
-          <div className="absolute bottom-0 left-0 right-0 container-padding mx-auto max-w-4xl pb-12 relative z-10">
+          <div className="absolute bottom-0 left-0 right-0 container-padding mx-auto max-w-4xl pb-12 z-10">
             <Button
               onClick={() => navigate('/services')}
               variant="ghost"
