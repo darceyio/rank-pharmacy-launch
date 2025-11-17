@@ -22,16 +22,16 @@ const Footer = () => {
     {
       heading: "Services",
       links: [
-        { label: "Prescriptions", href: "#prescriptions" },
-        { label: "All Services", href: "#services" },
-        { label: "Nominate", href: "#nominate" },
+        { label: "Prescriptions", href: "/#prescriptions" },
+        { label: "All Services", href: "/#services" },
+        { label: "Nominate", href: "/#nominate" },
       ],
     },
     {
       heading: "Company",
       links: [
-        { label: "About", href: "#about" },
-        { label: "Privacy", href: "#privacy" },
+        { label: "About", href: "/#about" },
+        { label: "Privacy", href: "/#privacy" },
       ],
     },
   ];
