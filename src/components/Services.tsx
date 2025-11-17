@@ -9,7 +9,7 @@ const Services = () => {
       image:
         "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=600&auto=format&fit=crop&q=80",
       alt: "Clinician performing earwax removal",
-      href: "#earwax-removal",
+      href: "/service/earwax-removal/book",
     },
     {
       title: "Blood Pressure Screening",
@@ -17,7 +17,7 @@ const Services = () => {
       image:
         "https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=600&auto=format&fit=crop&q=80",
       alt: "Patient having blood pressure checked",
-      href: "#blood-pressure",
+      href: "/service/blood-pressure-screening/book",
     },
     {
       title: "Weight Loss Service",
@@ -26,7 +26,7 @@ const Services = () => {
       image:
         "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&auto=format&fit=crop&q=80",
       alt: "Person checking their weight",
-      href: "#weight-loss",
+      href: "/service/weight-loss/book",
     },
   ];
 
