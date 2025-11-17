@@ -184,7 +184,7 @@ export default function ServiceDetail() {
             <Button
               onClick={() => navigate('/services')}
               variant="ghost"
-              className="mb-4 backdrop-blur-md bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-all"
+              className="mb-4 backdrop-blur-lg bg-white/20 border border-white/30 text-white hover:bg-white/30 transition-all shadow-lg"
             >
               <ChevronLeft className="mr-2 h-4 w-4" />
               Back to Services
