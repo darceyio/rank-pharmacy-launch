@@ -119,43 +119,46 @@ const Services = () => {
             const image = service.hero_image_url || "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&auto=format&fit=crop&q=80";
             
             return (
-              <Card
+              <Link 
                 key={service.id}
-                className="overflow-hidden border-2 hover:shadow-xl smooth-transition animate-fade-in"
-                style={{ animationDelay: `${index * 100}ms` }}
+                to={`/services/${service.slug}`}
+                className="block group"
               >
-                <div className="aspect-video overflow-hidden">
-                  {image.includes('.mp4') || image.includes('.webm') ? (
-                    <video
-                      src={image}
-                      className="w-full h-full object-cover hover-scale"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      preload="metadata"
-                    />
-                  ) : (
-                    <img
-                      src={image}
-                      alt={title}
-                      className="w-full h-full object-cover hover-scale"
-                      loading="lazy"
-                    />
-                  )}
-                </div>
-                <div className="p-6 space-y-4">
-                  <h3 className="text-2xl font-bold">{title}</h3>
-                  <p className="text-secondary line-clamp-5">{description}</p>
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="rounded-full border-2 w-full hover:bg-muted"
-                  >
-                    <Link to={`/services/${service.slug}`}>Book Now</Link>
-                  </Button>
-                </div>
-              </Card>
+                <Card className="overflow-hidden border-2 hover:shadow-xl smooth-transition animate-fade-in cursor-pointer h-full"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <div className="aspect-video overflow-hidden">
+                    {image.includes('.mp4') || image.includes('.webm') ? (
+                      <video
+                        src={image}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        preload="metadata"
+                      />
+                    ) : (
+                      <img
+                        src={image}
+                        alt={title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        loading="lazy"
+                      />
+                    )}
+                  </div>
+                  <div className="p-6 space-y-4">
+                    <h3 className="text-2xl font-bold group-hover:text-primary transition-colors">{title}</h3>
+                    <p className="text-secondary line-clamp-5">{description}</p>
+                    <Button
+                      variant="outline"
+                      className="rounded-full border-2 w-full hover:bg-muted pointer-events-none"
+                    >
+                      Book Now
+                    </Button>
+                  </div>
+                </Card>
+              </Link>
             );
           })}
         </div>
