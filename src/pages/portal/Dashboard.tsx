@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { usePharmacist } from '@/hooks/usePharmacist';
-import PortalLayout from '@/components/portal/PortalLayout';
+import PortalLayoutNew from '@/components/portal/PortalLayoutNew';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar, Briefcase, Users, ArrowRight, Settings } from 'lucide-react';
@@ -82,7 +82,7 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <PortalLayout>
+      <PortalLayoutNew>
         <div className="animate-pulse space-y-4">
           <div className="h-8 bg-muted rounded w-1/4"></div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -91,12 +91,12 @@ export default function Dashboard() {
             ))}
           </div>
         </div>
-      </PortalLayout>
+      </PortalLayoutNew>
     );
   }
 
   return (
-    <PortalLayout>
+    <PortalLayoutNew>
       <div className="space-y-8">
         <div>
           <h1 className="text-3xl font-bold">Dashboard</h1>
@@ -242,6 +242,6 @@ export default function Dashboard() {
           </CardContent>
         </Card>
       </div>
-    </PortalLayout>
+    </PortalLayoutNew>
   );
 }

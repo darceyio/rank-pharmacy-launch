@@ -13,6 +13,10 @@ import Dashboard from "./pages/portal/Dashboard";
 import Services from "./pages/portal/Services";
 import Bookings from "./pages/portal/Bookings";
 import PharmacySettings from "./pages/portal/settings/PharmacySettings";
+import EmailSettings from "./pages/portal/settings/EmailSettings";
+import Users from "./pages/portal/settings/Users";
+import ServiceContent from "./pages/portal/services/ServiceContent";
+import ServiceAvailability from "./pages/portal/services/ServiceAvailability";
 
 const queryClient = new QueryClient();
 
@@ -35,8 +39,12 @@ const App = () => (
           {/* Portal App Routes */}
           <Route path="/portal/dashboard" element={<Dashboard />} />
           <Route path="/portal/services" element={<Services />} />
+          <Route path="/portal/services/:id/content" element={<ServiceContent />} />
+          <Route path="/portal/services/:id/availability" element={<ServiceAvailability />} />
           <Route path="/portal/bookings" element={<Bookings />} />
           <Route path="/portal/settings/pharmacy" element={<PharmacySettings />} />
+          <Route path="/portal/settings/email" element={<EmailSettings />} />
+          <Route path="/portal/settings/users" element={<Users />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
