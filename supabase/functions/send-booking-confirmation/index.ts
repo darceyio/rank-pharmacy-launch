@@ -22,6 +22,16 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const { bookingId }: BookingConfirmationRequest = await req.json();
 
+    // SECURITY: Validate UUID format to prevent injection attacks
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!bookingId || typeof bookingId !== 'string' || !uuidRegex.test(bookingId)) {
+      console.error("Invalid booking ID format:", bookingId);
+      return new Response(
+        JSON.stringify({ error: "Invalid booking ID format" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     console.log("Processing booking confirmation for booking ID:", bookingId);
 
     // Initialize Supabase client
@@ -59,6 +69,17 @@ const handler = async (req: Request): Promise<Response> => {
       return new Response(
         JSON.stringify({ error: "Booking not found" }),
         { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // SECURITY: Verify booking was created recently (within 5 minutes) to prevent abuse
+    const bookingCreatedAt = new Date(booking.created_at);
+    const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
+    if (bookingCreatedAt < fiveMinutesAgo) {
+      console.error("Booking confirmation request for old booking:", bookingId);
+      return new Response(
+        JSON.stringify({ error: "Confirmation window expired" }),
+        { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
