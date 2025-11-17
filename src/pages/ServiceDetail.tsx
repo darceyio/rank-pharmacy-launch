@@ -155,9 +155,9 @@ export default function ServiceDetail() {
     <div className="min-h-screen">
       <Navigation />
       
-      {/* Hero Media - Full Width */}
+      {/* Hero Media - Full Width, Visual Only */}
       {service.hero_image_url && (
-        <div className="relative w-full h-[60vh] min-h-[400px] max-h-[600px] overflow-hidden">
+        <div className="relative w-full h-[50vh] md:h-[60vh] min-h-[300px] md:min-h-[400px] max-h-[500px] md:max-h-[600px] overflow-hidden">
           {service.hero_image_url.includes('.mp4') || service.hero_image_url.includes('.webm') ? (
             <video
               src={service.hero_image_url}
@@ -176,208 +176,157 @@ export default function ServiceDetail() {
               loading="lazy"
             />
           )}
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-background" />
-          
-          {/* Hero Content */}
-          <div className="absolute bottom-0 left-0 right-0 container-padding mx-auto max-w-4xl pb-12">
-            <div className="flex items-end justify-between gap-4">
-              <div className="text-white">
-                <h1 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">
-                  {service.custom_title || service.service_catalogue?.name}
-                </h1>
-                {service.short_summary && (
-                  <p className="text-xl md:text-2xl text-white/90 mb-4 drop-shadow-md max-w-3xl">
-                    {service.short_summary}
-                  </p>
-                )}
-                <div className="flex flex-wrap gap-4">
-                  {service.duration_minutes && (
-                    <Badge variant="secondary" className="text-base px-4 py-2">
-                      <Clock className="h-4 w-4 mr-2" />
-                      {service.duration_minutes} mins
-                    </Badge>
-                  )}
-                  {service.price_from && (
-                    <Badge variant="secondary" className="text-base px-4 py-2">
-                      <Coins className="h-4 w-4 mr-2" />
-                      From £{service.price_from}
-                    </Badge>
-                  )}
-                  {service.booking_enabled && (
-                    <Badge className="text-base px-4 py-2">
-                      <Calendar className="h-4 w-4 mr-2" />
-                      Book Online
-                    </Badge>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
+          {/* Subtle gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/30" />
         </div>
       )}
       
-      <main className={`container-padding mx-auto max-w-4xl pb-16 ${service.hero_image_url ? 'pt-12' : 'pt-32'}`}>
-        {!service.hero_image_url && (
-          <>
+      <main className={`container-padding mx-auto max-w-4xl pb-16 ${service.hero_image_url ? '-mt-8' : 'pt-32'}`}>
+        {/* Main Content Card */}
+        <Card className={`${service.hero_image_url ? 'shadow-lg' : ''} mb-8`}>
+          <CardContent className="pt-8 pb-8 space-y-6">
+            {/* Back Button */}
             <Button
               onClick={() => navigate('/services')}
               variant="ghost"
-              className="mb-6"
+              size="sm"
+              className="mb-2"
             >
               <ChevronLeft className="mr-2 h-4 w-4" />
               Back to Services
             </Button>
 
-            <div className="mb-8">
-              <div className="flex items-start justify-between gap-4 mb-4">
-                <h1 className="text-4xl md:text-5xl font-bold">
-                  {service.custom_title || service.service_catalogue?.name}
-                </h1>
+            {/* Service Title */}
+            <div>
+              <h1 className="text-3xl md:text-5xl font-bold mb-4">
+                {service.custom_title || service.service_catalogue?.name}
+              </h1>
+              
+              {/* Badges Row */}
+              <div className="flex flex-wrap gap-3 mb-4">
+                {service.duration_minutes && (
+                  <Badge variant="secondary" className="text-sm px-3 py-1.5">
+                    <Clock className="h-4 w-4 mr-1.5" />
+                    {service.duration_minutes} mins
+                  </Badge>
+                )}
+                {service.price_from && (
+                  <Badge variant="secondary" className="text-sm px-3 py-1.5">
+                    <Coins className="h-4 w-4 mr-1.5" />
+                    From £{service.price_from}
+                  </Badge>
+                )}
                 {service.booking_enabled && (
-                  <Badge variant="secondary" className="shrink-0">
-                    Book Online
+                  <Badge className="text-sm px-3 py-1.5">
+                    <Calendar className="h-4 w-4 mr-1.5" />
+                    Book Online Available
                   </Badge>
                 )}
               </div>
 
+              {/* Short Summary */}
               {service.short_summary && (
-                <p className="text-xl text-muted-foreground mb-6">
+                <p className="text-lg text-muted-foreground leading-relaxed">
                   {service.short_summary}
                 </p>
               )}
-
-              <div className="flex flex-wrap gap-6 text-muted-foreground">
-                {service.duration_minutes && (
-                  <div className="flex items-center gap-2">
-                    <Clock className="h-5 w-5" />
-                    <span>{service.duration_minutes} minutes</span>
-                  </div>
-                )}
-                {service.price_from && (
-                  <div className="flex items-center gap-2">
-                    <Coins className="h-5 w-5" />
-                    <span>From £{service.price_from}</span>
-                  </div>
-                )}
-              </div>
             </div>
 
-            <Separator className="my-8" />
-          </>
-        )}
-
-        {service.hero_image_url && (
-          <Button
-            onClick={() => navigate('/services')}
-            variant="ghost"
-            className="mb-8"
-          >
-            <ChevronLeft className="mr-2 h-4 w-4" />
-            Back to Services
-          </Button>
-        )}
-
-        <div className="prose prose-slate max-w-none mb-8">
-          <h2 className="text-2xl font-bold mb-4">About This Service</h2>
-          <p className="whitespace-pre-line text-foreground">
-            {service.description || service.service_catalogue?.default_description || 'No description available.'}
-          </p>
-        </div>
-
-        {pharmacists.length > 0 && (
-          <>
-            <Separator className="my-8" />
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold mb-6">Our Team</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {pharmacists.map((pharmacist) => (
-                  <Card key={pharmacist.id}>
-                    <CardHeader>
-                      <div className="flex items-center gap-4">
-                        {pharmacist.photo_url ? (
-                          <img
-                            src={pharmacist.photo_url}
-                            alt={`${pharmacist.first_name} ${pharmacist.last_name}`}
-                            className="w-16 h-16 rounded-full object-cover"
-                          />
-                        ) : (
-                          <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center text-2xl font-bold">
-                            {pharmacist.first_name?.charAt(0)}{pharmacist.last_name?.charAt(0)}
-                          </div>
-                        )}
-                        <div>
-                          <CardTitle className="text-lg">
-                            {pharmacist.first_name} {pharmacist.last_name}
-                          </CardTitle>
-                          <CardDescription className="capitalize">
-                            {pharmacist.role.replace('_', ' ')}
-                          </CardDescription>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    {pharmacist.bio && (
-                      <CardContent>
-                        <p className="text-sm text-muted-foreground">{pharmacist.bio}</p>
-                      </CardContent>
-                    )}
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </>
-        )}
-
-        <Separator className="my-8" />
-
-        {service.booking_enabled ? (
-          <div>
-            {!showBooking ? (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Book Your Appointment</CardTitle>
-                  <CardDescription>
-                    Select a date and time that works for you
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button onClick={() => setShowBooking(true)} size="lg" className="w-full">
+            {/* Primary CTA */}
+            {!showBooking && (
+              <div>
+                {service.booking_enabled ? (
+                  <Button 
+                    onClick={() => setShowBooking(true)} 
+                    size="lg" 
+                    className="w-full md:w-auto text-base px-8"
+                  >
                     <Calendar className="mr-2 h-5 w-5" />
-                    Choose Date & Time
+                    Book Appointment
                   </Button>
-                </CardContent>
-              </Card>
-            ) : (
-              <BookingWidget serviceId={service.id} />
+                ) : (
+                  <div className="space-y-3">
+                    <p className="text-sm font-medium text-muted-foreground">Contact us to book:</p>
+                    <div className="flex flex-wrap gap-4">
+                      {service.pharmacy?.phone && (
+                        <Button asChild variant="outline" size="lg">
+                          <a href={`tel:${service.pharmacy.phone}`}>
+                            📞 {service.pharmacy.phone}
+                          </a>
+                        </Button>
+                      )}
+                      {service.pharmacy?.primary_email && (
+                        <Button asChild variant="outline" size="lg">
+                          <a href={`mailto:${service.pharmacy.primary_email}`}>
+                            ✉️ Email Us
+                          </a>
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
+
+            {/* Separator */}
+            <Separator className="my-6" />
+
+            {/* About This Service */}
+            <div>
+              <h2 className="text-2xl font-bold mb-4">About This Service</h2>
+              <p className="whitespace-pre-line text-foreground leading-relaxed">
+                {service.description || service.service_catalogue?.default_description || 'No description available.'}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Booking Widget (shown when CTA clicked) */}
+        {showBooking && service.booking_enabled && (
+          <div className="mb-8">
+            <BookingWidget serviceId={service.id} />
           </div>
-        ) : (
-          <Card>
-            <CardHeader>
-              <CardTitle>Contact Us to Book</CardTitle>
-              <CardDescription>
-                Please call or email the pharmacy to enquire about this service
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              {service.pharmacy?.phone && (
-                <p>
-                  <strong>Phone:</strong>{' '}
-                  <a href={`tel:${service.pharmacy.phone}`} className="text-accent hover:underline">
-                    {service.pharmacy.phone}
-                  </a>
-                </p>
-              )}
-              {service.pharmacy?.primary_email && (
-                <p>
-                  <strong>Email:</strong>{' '}
-                  <a href={`mailto:${service.pharmacy.primary_email}`} className="text-accent hover:underline">
-                    {service.pharmacy.primary_email}
-                  </a>
-                </p>
-              )}
-            </CardContent>
-          </Card>
+        )}
+
+        {/* Our Team Section */}
+        {pharmacists.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold mb-6">Our Team</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {pharmacists.map((pharmacist) => (
+                <Card key={pharmacist.id}>
+                  <CardHeader>
+                    <div className="flex items-center gap-4">
+                      {pharmacist.photo_url ? (
+                        <img
+                          src={pharmacist.photo_url}
+                          alt={`${pharmacist.first_name} ${pharmacist.last_name}`}
+                          className="w-16 h-16 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center text-2xl font-bold">
+                          {pharmacist.first_name?.charAt(0)}{pharmacist.last_name?.charAt(0)}
+                        </div>
+                      )}
+                      <div>
+                        <CardTitle className="text-lg">
+                          {pharmacist.first_name} {pharmacist.last_name}
+                        </CardTitle>
+                        <CardDescription className="capitalize">
+                          {pharmacist.role.replace('_', ' ')}
+                        </CardDescription>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  {pharmacist.bio && (
+                    <CardContent>
+                      <p className="text-sm text-muted-foreground">{pharmacist.bio}</p>
+                    </CardContent>
+                  )}
+                </Card>
+              ))}
+            </div>
+          </div>
         )}
       </main>
 
