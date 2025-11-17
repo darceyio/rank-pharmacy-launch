@@ -10,6 +10,7 @@ import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import { ArrowLeft, Plus, Clock, Trash2 } from 'lucide-react';
+import AddAvailabilityDialog from '@/components/portal/AddAvailabilityDialog';
 
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -228,10 +229,20 @@ export default function ServiceAvailability() {
                   Define when this service is available for booking
                 </CardDescription>
               </div>
-              <Button size="sm" className="gap-2" disabled>
-                <Plus className="h-4 w-4" />
-                Add Rule
-              </Button>
+              <AddAvailabilityDialog 
+                serviceId={id!} 
+                pharmacists={pharmacists.filter(p => assignments.some(a => a.pharmacist_id === p.id))}
+                onSuccess={() => {
+                  // Refresh availability data
+                  supabase
+                    .from('service_availability')
+                    .select('*, pharmacists(first_name, last_name)')
+                    .eq('pharmacy_service_id', id)
+                    .order('day_of_week')
+                    .order('start_time')
+                    .then(({ data }) => setAvailability(data || []));
+                }}
+              />
             </div>
           </CardHeader>
           <CardContent>
@@ -239,13 +250,9 @@ export default function ServiceAvailability() {
               <div className="text-center py-8">
                 <Clock className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                 <h3 className="font-semibold mb-2">No availability rules</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Add availability rules to enable online booking
+                <p className="text-sm text-muted-foreground">
+                  Click "Add Availability" above to create your first availability rule
                 </p>
-                <Button size="sm" className="gap-2" disabled>
-                  <Plus className="h-4 w-4" />
-                  Add Your First Rule
-                </Button>
               </div>
             ) : (
               <div className="space-y-4">
