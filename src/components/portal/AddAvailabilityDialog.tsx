@@ -70,7 +70,7 @@ export default function AddAvailabilityDialog({ serviceId, pharmacists, onSucces
       end_time: '17:00',
       slot_length_minutes: 30,
       max_bookings_per_slot: 1,
-      pharmacist_id: '',
+      pharmacist_id: undefined,
     },
   });
 
@@ -358,7 +358,6 @@ export default function AddAvailabilityDialog({ serviceId, pharmacists, onSucces
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="">Any available pharmacist</SelectItem>
                       {pharmacists.map((p) => (
                         <SelectItem key={p.id} value={p.id}>
                           {p.first_name} {p.last_name}
@@ -367,7 +366,7 @@ export default function AddAvailabilityDialog({ serviceId, pharmacists, onSucces
                     </SelectContent>
                   </Select>
                   <FormDescription>
-                    Leave blank to allow any assigned pharmacist to handle bookings
+                    Leave unselected to allow any assigned pharmacist to handle bookings
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
